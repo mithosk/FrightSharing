@@ -12,8 +12,8 @@ export default class SplashActivity extends Component {
 
   render() {
     return (
-      <View style={style.Splash}>
-        <StatusBar barStyle="dark-content" hidden={true} backgroundColor="#04B486" />
+      <View style={style.SplashBody}>
+        <StatusBar barStyle="dark-content" hidden={true} style={style.SplashStatusBar} />
         <Text>CIAO</Text>
       </View>
     );

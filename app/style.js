@@ -4,11 +4,15 @@ import { StyleSheet } from 'react-native';
 
 export const style = StyleSheet.create(
     {
-        Splash:
+        SplashBody:
         {
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
             flex: 15,
             backgroundColor: "#04B486"
-        }
+        },
+        SplashStatusBar:
+        {
+            backgroundColor: "#04B486"
+        },
     });
