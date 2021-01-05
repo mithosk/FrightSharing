@@ -2,19 +2,20 @@
 
 import { style } from '../style';
 import React, { Component } from 'react';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Image } from 'react-native';
 
 export default class SplashActivity extends Component {
 
   constructor() {
     super();
+
+    setTimeout(() => this.props.navigation.navigate('home'), 4000);
   }
 
   render() {
     return (
       <View style={style.SplashBody}>
-        <StatusBar barStyle="dark-content" hidden={true} style={style.SplashStatusBar} />
-        <Text>CIAO</Text>
+        <Image source={require('../images/logo.png')} style={{ width: 200, height: 200 }} />
       </View>
     );
   }
