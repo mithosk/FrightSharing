@@ -13,6 +13,11 @@ export const style = StyleSheet.create(
             backgroundColor: "#04B486"
         },
 
+        HeaderTitle: {
+            fontFamily: "Spicy Pumpkin",
+            fontSize: 25
+        },
+
         SplashBody:
         {
             alignItems: "center",
