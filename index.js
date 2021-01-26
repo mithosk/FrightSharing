@@ -24,14 +24,14 @@ AppRegistry.registerComponent(name, () => () => (
         } />
       <Stack.Screen name="home" component={HomeActivity} options=
         {
-          {
+          ({ navigation }) => ({
             headerStyle: {
               backgroundColor: style.Header.backgroundColor
             },
             headerTitle: <Text style={style.HeaderTitle}>{displayName}</Text>,
             headerLeft: () => (
               <View style={{ width: 60 }}>
-                <Icon type="feather" name="search" onPress={() => alert("SEARCH")} />
+                <Icon type="feather" name="search" onPress={() => navigation.navigate('home', { searchModal: true })} />
               </View>
             ),
             headerRight: () => (
@@ -39,7 +39,7 @@ AppRegistry.registerComponent(name, () => () => (
                 <Icon type="feather" name="edit-3" onPress={() => alert("WRITE")} />
               </View>
             )
-          }
+          })
         } />
     </Stack.Navigator>
   </NavigationContainer>
