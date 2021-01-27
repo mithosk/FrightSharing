@@ -7,10 +7,10 @@ import { CommonActions } from '@react-navigation/native';
 
 export default class SplashActivity extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.Startup();
+    this.startup();
   }
 
   render() {
@@ -21,15 +21,15 @@ export default class SplashActivity extends Component {
     );
   }
 
-  Startup = () => {
+  startup = () => {
     setTimeout(() => {
-      this.props.navigation.navigate('home');
+      this.props.navigation.navigate('home', { searchModal: false });
 
-      this.props.navigation.dispatch(s => {
-        var routes = s.routes.filter(r => r.name !== 'splash');
+      this.props.navigation.dispatch(state => {
+        var routes = state.routes.filter(route => route.name !== 'splash');
 
         return CommonActions.reset({
-          ...s,
+          ...state,
           routes,
           index: routes.length - 1,
         });
