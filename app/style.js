@@ -24,6 +24,16 @@ export const style = StyleSheet.create(
             justifyContent: "center",
             flex: 1,
             backgroundColor: "#04B486"
+        },
+
+        SearchModal: {
+            borderWidth: 4,
+            borderRadius: 10,
+            borderColor: "#04B486",
+            height: 350,
+            backgroundColor: "#FFFFFF",
+            alignItems: 'center',
+            justifyContent: 'center'
         }
 
     });
