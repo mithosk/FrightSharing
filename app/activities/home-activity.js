@@ -14,7 +14,7 @@ export default class HomeActivity extends Component {
   render() {
     return (
       <View>
-        <Modal isVisible={this.props.route.params.searchModal} animationType="slideInDown">
+        <Modal isVisible={this.props.route.params.searchModal} animationInTiming={1} animationOutTiming={1}>
           <View style={style.SearchModal}>
             <Text onPress={() => this.props.navigation.navigate('home', { searchModal: false })}>Leonardo Nicolini Bello!!</Text>
           </View>
