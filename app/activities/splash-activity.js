@@ -16,17 +16,17 @@ export default class SplashActivity extends Component {
   render() {
     return (
       <View style={style.SplashBody}>
-        <Image source={require('../images/logo.png')} style={{ width: 200, height: 200 }} />
+        <Image source={require("../images/logo.png")} style={{ width: 200, height: 200 }} />
       </View>
     );
   }
 
   startup = () => {
     setTimeout(() => {
-      this.props.navigation.navigate('home', { searchModal: false });
+      this.props.navigation.navigate("home", { searchModal: false, searchMode: "new" });
 
       this.props.navigation.dispatch(state => {
-        var routes = state.routes.filter(route => route.name !== 'splash');
+        var routes = state.routes.filter(route => route.name != "splash");
 
         return CommonActions.reset({
           ...state,
