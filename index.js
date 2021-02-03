@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { style } from './app/style';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 import { name, displayName } from './app.json';
 import HomeActivity from './app/activities/home-activity';
 import SplashActivity from './app/activities/splash-activity';
@@ -28,10 +28,10 @@ AppRegistry.registerComponent(name, () => () => (
             headerStyle: {
               backgroundColor: style.Header.backgroundColor
             },
-            headerTitle: <Text style={style.HeaderTitle}>{displayName}</Text>,
+            headerTitle: <Text style={style.HomeHeaderTitle}>{displayName}</Text>,
             headerLeft: () => (
               <View style={{ width: 60 }}>
-                <Icon type="feather" name="search" onPress={() => navigation.navigate('home', { searchModal: true })} />
+                <Icon type="feather" name="search" onPress={() => navigation.navigate("home", { searchModal: true, searchMode: "none" })} />
               </View>
             ),
             headerRight: () => (
