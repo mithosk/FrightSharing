@@ -19,8 +19,9 @@ export const style = StyleSheet.create(
 
         ButtonTitle: {
             color: "#000000",
-            fontSize: 18,
-            marginLeft: 20
+            fontSize: 16,
+            marginLeft: 20,
+            textTransform: "uppercase"
         },
 
         SplashBody: {
