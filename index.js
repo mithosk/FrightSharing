@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { style } from './app/style';
+import { translate } from './app/vocabulary';
 import { Icon } from 'react-native-elements';
 import { name, displayName } from './app.json';
 import HomeActivity from './app/activities/home-activity';
@@ -9,6 +10,7 @@ import SplashActivity from './app/activities/splash-activity';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppRegistry, StatusBar, Text, View } from 'react-native';
+import AddStoryActivity from './app/activities/add-story-activity';
 
 const Stack = createStackNavigator();
 
@@ -36,10 +38,19 @@ AppRegistry.registerComponent(name, () => () => (
             ),
             headerRight: () => (
               <View style={{ width: 60 }}>
-                <Icon type="feather" name="edit-3" onPress={() => alert("WRITE")} />
+                <Icon type="feather" name="edit-3" onPress={() => navigation.navigate("addstory")} />
               </View>
             )
           })
+        } />
+      <Stack.Screen name="addstory" component={AddStoryActivity} options=
+        {
+          {
+            headerStyle: {
+              backgroundColor: style.Header.backgroundColor
+            },
+            headerTitle: translate("addstory_header_title"),
+          }
         } />
     </Stack.Navigator>
   </NavigationContainer>
