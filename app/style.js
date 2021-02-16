@@ -44,6 +44,10 @@ export const style = StyleSheet.create(
             borderWidth: 4,
             borderRadius: 10,
             borderColor: "#04B486"
+        },
+
+        AddStoryBody: {
+            alignItems: "center"
         }
 
     });
