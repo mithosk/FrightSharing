@@ -24,6 +24,20 @@ export const style = StyleSheet.create(
             textTransform: "uppercase"
         },
 
+        Loader: {
+            width: 60,
+            color: "#04B486",
+        },
+
+        LoaderOverlay: {
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            justifyContent: "center"
+        },
+
         SplashBody: {
             flex: 1,
             alignItems: "center",
@@ -36,18 +50,15 @@ export const style = StyleSheet.create(
             fontSize: 25
         },
 
-        SearchModal: {
+        HomeSearchModal: {
             height: 350,
             backgroundColor: "#FFFFFF",
             alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 4,
-            borderRadius: 10,
-            borderColor: "#04B486"
+            justifyContent: "center"
         },
 
         AddStoryBody: {
-            alignItems: "center"
+            flex: 1
         }
 
     });
