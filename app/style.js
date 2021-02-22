@@ -28,6 +28,12 @@ export const style = StyleSheet.create(
             textTransform: "uppercase"
         },
 
+        ErrorLabel: {
+            color: "#FF0000",
+            fontWeight: "bold",
+            textTransform: "uppercase"
+        },
+
         Loader: {
             width: 60,
             color: "#04B486",
