@@ -13,8 +13,12 @@ export const style = StyleSheet.create(
             backgroundColor: "#04B486"
         },
 
-        Button: {
+        ButtonLight: {
             backgroundColor: "#EDEDED"
+        },
+
+        ButtonDark: {
+            backgroundColor: "#C8C8C8"
         },
 
         ButtonTitle: {
