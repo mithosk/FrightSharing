@@ -29,7 +29,7 @@ export const style = StyleSheet.create(
         },
 
         ErrorLabel: {
-            color: "#FF0000",
+            color: "#D70000",
             fontWeight: "bold",
             textTransform: "uppercase"
         },
