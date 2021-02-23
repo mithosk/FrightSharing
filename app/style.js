@@ -65,10 +65,6 @@ export const style = StyleSheet.create(
             backgroundColor: "#FFFFFF",
             alignItems: "center",
             justifyContent: "center"
-        },
-
-        AddStoryBody: {
-            flex: 1
         }
 
     });
