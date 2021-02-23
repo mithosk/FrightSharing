@@ -28,7 +28,7 @@ export default class AddStoryActivity extends Component {
       <View style={{ flex: 1 }}>
         <ScrollView style={{ marginTop: 30 }}>
           <Input placeholder={translate("addstory_body_title")} errorMessage={this.state.titleErr} errorStyle={style.ErrorLabel} maxLength={42} onChangeText={text => this.setState({ title: text })} />
-          <Input placeholder={translate("addstory_body_tale")} errorMessage={this.state.titleErr} errorStyle={style.ErrorLabel} multiline={true} onChangeText={text => this.setState({ tale: text })} />
+          <Input placeholder={translate("addstory_body_tale")} errorMessage={this.state.taleErr} errorStyle={style.ErrorLabel} multiline={true} onChangeText={text => this.setState({ tale: text })} />
         </ScrollView>
         <View>
           <Button buttonStyle={style.ButtonDark} icon={<Icon type="feather" name="share" size={40} />} title={translate("addstory_footer_publish")} titleStyle={style.ButtonTitle} onPress={this.publish} />
