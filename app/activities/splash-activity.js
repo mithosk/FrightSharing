@@ -3,14 +3,18 @@
 import { style } from '../style';
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
+import createGuid from 'react-native-create-guid';
 import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class SplashActivity extends Component {
 
   constructor(props) {
     super(props);
 
-    this.startup();
+    this.setUserId().then(() => {
+      this.startup();
+    });
   }
 
   render() {
@@ -19,6 +23,13 @@ export default class SplashActivity extends Component {
         <Image source={require("../images/logo.png")} style={{ width: 200, height: 200 }} />
       </View>
     );
+  }
+
+  setUserId = async () => {
+    var userId = await AsyncStorage.getItem("userId");
+
+    if (userId == null)
+      await AsyncStorage.setItem("userId", await createGuid());
   }
 
   startup = () => {
