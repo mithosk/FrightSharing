@@ -8,6 +8,8 @@ import GetLocation from 'react-native-get-location';
 import { View, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Icon, Button, Input } from 'react-native-elements';
+import storyRepository from '../repositories/story-repository';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class AddStoryActivity extends Component {
 
@@ -50,23 +52,34 @@ export default class AddStoryActivity extends Component {
 
     this.setState({
       titleErr: !validTitle ? translate("addstory_body_titleerr") : "",
-      taleErr: !validTale ? translate("addstory_body_taleerr") : "",
+      taleErr: !validTale ? translate("addstory_body_taleerr") : ""
     });
 
     if (validTitle & validTale) {
       this.setState({ loader: true });
 
-      var location = await GetLocation.getCurrentPosition();
+      try {
+        var location = await GetLocation.getCurrentPosition({
+          timeout: 10000,
+          enableHighAccuracy: false
+        });
 
-      var model = new Object();
-      model.language = I18n.currentLocale();
-      model.title = this.state.title;
-      model.tale = this.state.tale;
-      model.latitude = location.latitude;
-      model.longitude = location.longitude;
+        var story = new Object();
+        story.language = I18n.currentLocale();
+        story.title = this.state.title;
+        story.tale = this.state.tale;
+        story.latitude = location.latitude;
+        story.longitude = location.longitude;
+        story.userId = await AsyncStorage.getItem("userId");
 
-      alert(JSON.stringify(model));
-      this.props.navigation.navigate("home", { searchModal: false, searchMode: "new" });
+        await storyRepository.post(story);
+
+        this.props.navigation.navigate("home", { searchModal: false, searchMode: "mine" });
+      }
+      catch (e) {
+        this.setState({ loader: false });
+        alert(e);
+      }
     }
   }
 
