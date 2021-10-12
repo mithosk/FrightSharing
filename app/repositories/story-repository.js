@@ -12,7 +12,7 @@ module.exports.post = async function (body) {
     if (json != null)
         stories = JSON.parse(json);
 
-    stories.push(body);
+    stories.unshift(body);
 
     await AsyncStorage.setItem("stories", JSON.stringify(stories));
 }
