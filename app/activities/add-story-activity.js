@@ -61,7 +61,7 @@ export default class AddStoryActivity extends Component {
       try {
         var location = await GetLocation.getCurrentPosition({
           timeout: 10000,
-          enableHighAccuracy: false
+          enableHighAccuracy: true
         });
 
         var story = new Object();
