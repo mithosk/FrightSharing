@@ -48,6 +48,37 @@ export const style = StyleSheet.create(
             justifyContent: "center"
         },
 
+        StoryListItem: {
+            backgroundColor: "#FFFFFF",
+            padding: 20,
+            marginTop: 11
+        },
+
+        StoryListTitle: {
+            fontSize: 17,
+            fontWeight: "bold",
+            textTransform: "uppercase"
+        },
+
+        StoryListTime: {
+            fontSize: 12
+        },
+
+        StoryListTale: {
+            fontSize: 17,
+            textAlign: "justify",
+            marginTop: 15,
+            textTransform: "lowercase"
+        },
+
+        StoryListSubsection: {
+            paddingTop: 17,
+            marginTop: 10,
+            borderTopWidth: 1,
+            borderTopColor: "#C8C8C8",
+            flexDirection: "row"
+        },
+
         SplashBody: {
             flex: 1,
             alignItems: "center",
