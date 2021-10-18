@@ -6,10 +6,10 @@ import { translate } from './app/vocabulary';
 import { Icon } from 'react-native-elements';
 import { name, displayName } from './app.json';
 import HomeActivity from './app/activities/home-activity';
+import { AppRegistry, StatusBar, View } from 'react-native';
 import SplashActivity from './app/activities/splash-activity';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AppRegistry, StatusBar, Text, View } from 'react-native';
 import AddStoryActivity from './app/activities/add-story-activity';
 
 const Stack = createStackNavigator();
@@ -27,10 +27,9 @@ AppRegistry.registerComponent(name, () => () => (
       <Stack.Screen name="home" component={HomeActivity} options=
         {
           ({ navigation }) => ({
-            headerStyle: {
-              backgroundColor: style.Header.backgroundColor
-            },
-            headerTitle: <Text style={style.HomeHeaderTitle}>{displayName}</Text>,
+            headerStyle: style.Header,
+            headerTitle: displayName,
+            headerTitleStyle: style.HomeHeaderTitle,
             headerLeft: () => (
               <View style={{ width: 60 }}>
                 <Icon type="feather" name="search" onPress={() => navigation.navigate("home", { searchModal: true, searchMode: "none" })} />
@@ -46,10 +45,8 @@ AppRegistry.registerComponent(name, () => () => (
       <Stack.Screen name="addstory" component={AddStoryActivity} options=
         {
           {
-            headerStyle: {
-              backgroundColor: style.Header.backgroundColor
-            },
-            headerTitle: translate("addstory_header_title"),
+            headerStyle: style.Header,
+            headerTitle: translate("addstory_header_title")
           }
         } />
     </Stack.Navigator>
