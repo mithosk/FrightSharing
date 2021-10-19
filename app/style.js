@@ -55,7 +55,7 @@ export const style = StyleSheet.create(
         },
 
         StoryListTitle: {
-            fontSize: 17,
+            fontSize: 15,
             fontWeight: "bold",
             textTransform: "uppercase"
         },
@@ -65,7 +65,7 @@ export const style = StyleSheet.create(
         },
 
         StoryListTale: {
-            fontSize: 17,
+            fontSize: 15,
             textAlign: "justify",
             marginTop: 15,
             textTransform: "lowercase"
