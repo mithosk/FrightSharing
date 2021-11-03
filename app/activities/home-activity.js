@@ -10,7 +10,7 @@ import moment from 'moment/min/moment-with-locales';
 import { Icon, Button } from 'react-native-elements';
 import storyRepository from '../repositories/story-repository';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FlatList, Text, ActivityIndicator, View, TouchableOpacity } from 'react-native';
+import { FlatList, Text, ActivityIndicator, View, TouchableOpacity, RefreshControl } from 'react-native';
 
 export default class HomeActivity extends Component {
 
@@ -20,11 +20,18 @@ export default class HomeActivity extends Component {
     this.state = {
       stories: [],
       pageIndex: 1,
-      loader: false,
+      nextPage: false,
+      mainLoader: false,
+      refreshLoader: false
     };
 
-    this.props.navigation.addListener('focus', async () => {
-      await this.compileStories();
+    this.props.navigation.addListener("focus", async () => {
+      this.setState({
+        pageIndex: 1,
+        mainLoader: true
+      },
+        this.compileStories
+      );
     });
   }
 
@@ -34,20 +41,21 @@ export default class HomeActivity extends Component {
         <Modal isVisible={this.props.route.params.searchModal} animationInTiming={1} animationOutTiming={1}>
           <View style={style.HomeSearchModal}>
             <View style={{ width: "90%", marginTop: 1 }}>
-              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="clock" size={45} />} title={translate("home_search_new")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("new")} />
+              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="clock" size={40} />} title={translate("home_search_new")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("new")} />
             </View>
             <View style={{ width: "90%", marginTop: 10 }}>
-              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="thumbs-up" size={45} />} title={translate("home_search_best")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("best")} />
+              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="thumbs-up" size={40} />} title={translate("home_search_best")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("best")} />
             </View>
             <View style={{ width: "90%", marginTop: 10 }}>
-              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="map-pin" size={45} />} title={translate("home_search_near")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("near")} />
+              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="map-pin" size={40} />} title={translate("home_search_near")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("near")} />
             </View>
             <View style={{ width: "90%", marginTop: 10 }}>
-              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="user" size={45} />} title={translate("home_search_mine")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("mine")} />
+              <Button buttonStyle={style.ButtonLight} icon={<Icon type="feather" name="user" size={40} />} title={translate("home_search_mine")} titleStyle={style.ButtonTitle} onPress={() => this.changeSearchMode("mine")} />
             </View>
           </View>
         </Modal>
         <FlatList
+          ref={(ref) => { this.flatListRef = ref; }}
           data={this.state.stories}
           renderItem=
           {
@@ -68,7 +76,7 @@ export default class HomeActivity extends Component {
                     <Icon type="feather" name="share-2" onPress={() => alert("SHARE")} />
                   </View>
                   <View style={{ width: 60 }}>
-                    <Icon type="feather" name="thumbs-up" onPress={() => alert("LIKE")} />
+                    <Icon type="feather" name="heart" onPress={() => alert("LIKE")} />
                   </View>
                   <View style={{ width: 60 }}>
                     <Icon type="feather" name="thumbs-down" onPress={() => alert("UNLIKE")} />
@@ -76,9 +84,19 @@ export default class HomeActivity extends Component {
                 </View>
               </View>
             )
+          }
+          onEndReached={this.goToNextPage}
+          refreshing={true}
+          refreshControl=
+          {
+            <RefreshControl
+              colors={[style.Loader.color, "#0000FF", "#FF0000", "#FFFF00", "#F60EBE"]}
+              refreshing={this.state.refreshLoader}
+              onRefresh={(this.goToFirtsPage)}
+            />
           } />
         {
-          this.state.loader ?
+          this.state.mainLoader ?
             <View style={style.LoaderOverlay}>
               <ActivityIndicator size={style.Loader.width} color={style.Loader.color} />
             </View>
@@ -90,9 +108,11 @@ export default class HomeActivity extends Component {
 
   compileStories = async () => {
     if (this.props.route.params.searchMode != "none") {
-      this.setState({ loader: true });
+      this.flatListRef.scrollToOffset({ animated: false, offset: 0 });
 
       var filter = new Object();
+      filter.pageIndex = this.state.pageIndex;
+      filter.pageSize = 10;
 
       try {
         var location = await GetLocation.getCurrentPosition({
@@ -121,18 +141,31 @@ export default class HomeActivity extends Component {
             break;
         }
 
-        filter.pageIndex = this.state.pageIndex;
-        filter.pageSize = 15;
-
         var repoStories = await storyRepository.list(filter);
 
+        var stateStories = [];
+        if (this.state.pageIndex > 1) {
+          stateStories = this.state.stories;
+          for (var i = 0; i < repoStories.length; i++)
+            stateStories.shift();
+        }
+
+        for (var i = 0; i < repoStories.length; i++)
+          stateStories.push(repoStories[i]);
+
         this.setState({
-          stories: repoStories,
-          loader: false
+          stories: stateStories,
+          nextPage: repoStories.length == 10,
+          mainLoader: false,
+          refreshLoader: false
         });
       }
       catch (e) {
-        this.setState({ loader: false });
+        this.setState({
+          mainLoader: false,
+          refreshLoader: false
+        });
+
         alert(e);
       }
     }
@@ -142,7 +175,31 @@ export default class HomeActivity extends Component {
     this.props.route.params.searchMode = searchMode;
     this.props.route.params.searchModal = false;
 
-    await this.compileStories();
+    this.setState({
+      pageIndex: 1,
+      mainLoader: true
+    },
+      this.compileStories
+    );
+  }
+
+  goToFirtsPage = () => {
+    this.setState({
+      pageIndex: 1
+    },
+      this.compileStories
+    );
+  }
+
+  goToNextPage = () => {
+    if (this.state.nextPage) {
+      this.setState({
+        pageIndex: this.state.pageIndex + 1,
+        mainLoader: true
+      },
+        this.compileStories
+      );
+    }
   }
 
 }
