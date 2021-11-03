@@ -17,6 +17,8 @@ export default class HomeActivity extends Component {
   constructor(props) {
     super(props);
 
+    this.pageSize = 10;
+
     this.state = {
       stories: [],
       pageIndex: 1,
@@ -112,7 +114,7 @@ export default class HomeActivity extends Component {
 
       var filter = new Object();
       filter.pageIndex = this.state.pageIndex;
-      filter.pageSize = 10;
+      filter.pageSize = this.pageSize;
 
       try {
         var location = await GetLocation.getCurrentPosition({
@@ -155,7 +157,7 @@ export default class HomeActivity extends Component {
 
         this.setState({
           stories: stateStories,
-          nextPage: repoStories.length == 10,
+          nextPage: repoStories.length == this.pageSize,
           mainLoader: false,
           refreshLoader: false
         });
