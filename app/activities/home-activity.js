@@ -114,7 +114,7 @@ export default class HomeActivity extends Component {
     if (this.props.route.params.searchMode != "none") {
       this.flatListRef.scrollToOffset({
         animated: false,
-        offset: this.state.pageIndex == 1 ? 0 : this.state.scrollPosition / 2
+        offset: this.state.scrollPosition - (this.state.scrollPosition * 0.24)
       });
 
       var filter = new Object();
@@ -165,7 +165,15 @@ export default class HomeActivity extends Component {
           nextPage: repoStories.length == filter.pageSize,
           mainLoader: false,
           refreshLoader: false
-        });
+        },
+          () => {
+            if (stateStories.length > 0) {
+              var index = stateStories.length - repoStories.length - 2;
+              index = index < 0 ? 0 : index;
+
+              this.flatListRef.scrollToIndex({ animated: false, index: index });
+            }
+          });
       }
       catch (e) {
         this.setState({
