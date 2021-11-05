@@ -162,9 +162,7 @@ export default class HomeActivity extends Component {
 
         this.setState({
           stories: stateStories,
-          nextPage: repoStories.length == filter.pageSize,
-          mainLoader: false,
-          refreshLoader: false
+          nextPage: false
         },
           () => {
             if (stateStories.length > 0) {
@@ -173,6 +171,12 @@ export default class HomeActivity extends Component {
 
               this.flatListRef.scrollToIndex({ animated: false, index: index });
             }
+
+            this.setState({
+              nextPage: repoStories.length == filter.pageSize,
+              mainLoader: false,
+              refreshLoader: false
+            });
           });
       }
       catch (e) {
