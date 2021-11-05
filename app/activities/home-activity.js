@@ -22,7 +22,6 @@ export default class HomeActivity extends Component {
     this.state = {
       stories: [],
       pageIndex: 1,
-      scrollPosition: 0,
       nextPage: false,
       mainLoader: false,
       refreshLoader: false
@@ -88,7 +87,6 @@ export default class HomeActivity extends Component {
               </View>
             )
           }
-          onScroll={(event) => this.setState({ scrollPosition: event.nativeEvent.contentOffset.y })}
           onEndReached={this.goToNextPage}
           refreshing={true}
           refreshControl=
@@ -112,11 +110,6 @@ export default class HomeActivity extends Component {
 
   compileStories = async () => {
     if (this.props.route.params.searchMode != "none") {
-      this.flatListRef.scrollToOffset({
-        animated: false,
-        offset: this.state.scrollPosition - (this.state.scrollPosition * 0.24)
-      });
-
       var filter = new Object();
       filter.pageIndex = this.state.pageIndex;
       filter.pageSize = this.pageSize * (this.state.pageIndex == 1 ? 2 : 1);
