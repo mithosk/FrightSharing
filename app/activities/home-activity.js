@@ -165,11 +165,13 @@ export default class HomeActivity extends Component {
               this.flatListRef.scrollToIndex({ animated: false, index: index });
             }
 
-            this.setState({
-              nextPage: repoStories.length == filter.pageSize,
-              mainLoader: false,
-              refreshLoader: false
-            });
+            setTimeout(() => {
+              this.setState({
+                nextPage: repoStories.length == filter.pageSize,
+                mainLoader: false,
+                refreshLoader: false
+              });
+            }, 100);
           });
       }
       catch (e) {
