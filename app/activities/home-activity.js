@@ -17,11 +17,12 @@ export default class HomeActivity extends Component {
   constructor(props) {
     super(props);
 
-    this.pageSize = 10;
+    this.pageSize = 5;
 
     this.state = {
       stories: [],
       pageIndex: 1,
+      scrollPosition: 0,
       nextPage: false,
       mainLoader: false,
       refreshLoader: false
@@ -87,6 +88,7 @@ export default class HomeActivity extends Component {
               </View>
             )
           }
+          onScroll={(event) => this.setState({ scrollPosition: event.nativeEvent.contentOffset.y })}
           onEndReached={this.goToNextPage}
           refreshing={true}
           refreshControl=
@@ -94,7 +96,7 @@ export default class HomeActivity extends Component {
             <RefreshControl
               colors={[style.Loader.color, "#0000FF", "#FF0000", "#FFFF00", "#F60EBE"]}
               refreshing={this.state.refreshLoader}
-              onRefresh={(this.goToFirtsPage)}
+              onRefresh={(this.goToFirstPage)}
             />
           } />
         {
@@ -110,11 +112,14 @@ export default class HomeActivity extends Component {
 
   compileStories = async () => {
     if (this.props.route.params.searchMode != "none") {
-      this.flatListRef.scrollToOffset({ animated: false, offset: 0 });
+      this.flatListRef.scrollToOffset({
+        animated: false,
+        offset: this.state.pageIndex == 1 ? 0 : this.state.scrollPosition / 2
+      });
 
       var filter = new Object();
       filter.pageIndex = this.state.pageIndex;
-      filter.pageSize = this.pageSize;
+      filter.pageSize = this.pageSize * (this.state.pageIndex == 1 ? 2 : 1);
 
       try {
         var location = await GetLocation.getCurrentPosition({
@@ -157,7 +162,7 @@ export default class HomeActivity extends Component {
 
         this.setState({
           stories: stateStories,
-          nextPage: repoStories.length == this.pageSize,
+          nextPage: repoStories.length == filter.pageSize,
           mainLoader: false,
           refreshLoader: false
         });
@@ -185,7 +190,7 @@ export default class HomeActivity extends Component {
     );
   }
 
-  goToFirtsPage = () => {
+  goToFirstPage = () => {
     this.setState({
       pageIndex: 1
     },
@@ -196,7 +201,7 @@ export default class HomeActivity extends Component {
   goToNextPage = () => {
     if (this.state.nextPage) {
       this.setState({
-        pageIndex: this.state.pageIndex + 1,
+        pageIndex: this.state.pageIndex + (this.state.pageIndex == 1 ? 2 : 1),
         mainLoader: true
       },
         this.compileStories
