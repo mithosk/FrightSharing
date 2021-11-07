@@ -92,7 +92,7 @@ export const style = StyleSheet.create(
         },
 
         HomeSearchModal: {
-            height: 330,
+            height: 300,
             backgroundColor: "#FFFFFF",
             alignItems: "center",
             justifyContent: "center"
