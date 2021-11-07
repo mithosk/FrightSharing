@@ -3,6 +3,7 @@
 import { style } from '../style';
 import I18n from 'react-native-i18n';
 import Modal from 'react-native-modal';
+import Share from 'react-native-share';
 import React, { Component } from 'react';
 import { translate } from '../vocabulary';
 import GetLocation from 'react-native-get-location';
@@ -18,6 +19,7 @@ export default class HomeActivity extends Component {
     super(props);
 
     this.pageSize = 5;
+    this.synchDelay = 65;
 
     this.state = {
       stories: [],
@@ -27,7 +29,7 @@ export default class HomeActivity extends Component {
       refreshLoader: false
     };
 
-    this.props.navigation.addListener("focus", async () => {
+    this.props.navigation.addListener("focus", () => {
       this.setState({
         pageIndex: 1,
         mainLoader: true
@@ -75,7 +77,7 @@ export default class HomeActivity extends Component {
                 </TouchableOpacity>
                 <View style={style.StoryListSubsection}>
                   <View style={{ width: 60 }}>
-                    <Icon type="feather" name="share-2" onPress={() => alert("SHARE")} />
+                    <Icon type="feather" name="share-2" onPress={() => this.share(item.title, item.tale)} />
                   </View>
                   <View style={{ width: 60 }}>
                     <Icon type="feather" name="heart" onPress={() => alert("LIKE")} />
@@ -94,8 +96,7 @@ export default class HomeActivity extends Component {
             <RefreshControl
               colors={[style.Loader.color, "#0000FF", "#FF0000", "#FFFF00", "#F60EBE"]}
               refreshing={this.state.refreshLoader}
-              onRefresh={(this.goToFirstPage)}
-            />
+              onRefresh={(this.goToFirstPage)} />
           } />
         {
           this.state.mainLoader ?
@@ -155,7 +156,6 @@ export default class HomeActivity extends Component {
 
         this.setState({
           stories: stateStories,
-          nextPage: false
         },
           () => {
             if (stateStories.length > 0) {
@@ -171,11 +171,14 @@ export default class HomeActivity extends Component {
                 mainLoader: false,
                 refreshLoader: false
               });
-            }, 100);
+            },
+              this.synchDelay
+            );
           });
       }
       catch (e) {
         this.setState({
+          nextPage: false,
           mainLoader: false,
           refreshLoader: false
         });
@@ -191,6 +194,7 @@ export default class HomeActivity extends Component {
 
     this.setState({
       pageIndex: 1,
+      nextPage: false,
       mainLoader: true
     },
       this.compileStories
@@ -209,11 +213,21 @@ export default class HomeActivity extends Component {
     if (this.state.nextPage) {
       this.setState({
         pageIndex: this.state.pageIndex + (this.state.pageIndex == 1 ? 2 : 1),
+        nextPage: false,
         mainLoader: true
       },
         this.compileStories
       );
     }
+  }
+
+  share = async (title, tale) => {
+    try {
+      await Share.open({
+        title: title.toUpperCase(),
+        message: tale
+      });
+    } catch { }
   }
 
 }
