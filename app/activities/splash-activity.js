@@ -46,7 +46,8 @@ export default class SplashActivity extends Component {
         });
       });
     },
-      4000);
+      4000
+    );
   }
 
 }
