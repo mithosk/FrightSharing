@@ -2,9 +2,9 @@
 
 import { style } from '../style';
 import I18n from 'react-native-i18n';
+import { localize } from '../position';
 import React, { Component } from 'react';
 import { translate } from '../vocabulary';
-import GetLocation from 'react-native-get-location';
 import { View, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Icon, Button, Input } from 'react-native-elements';
@@ -59,10 +59,7 @@ export default class AddStoryActivity extends Component {
       this.setState({ loader: true });
 
       try {
-        var location = await GetLocation.getCurrentPosition({
-          timeout: 10000,
-          enableHighAccuracy: true
-        });
+        var location = await localize();
 
         var story = new Object();
         story.language = I18n.currentLocale();
