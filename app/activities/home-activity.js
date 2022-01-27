@@ -19,7 +19,7 @@ export default class HomeActivity extends Component {
     super(props);
 
     this.pageSize = 5;
-    this.synchDelay = 65;
+    this.synchDelay = 75;
 
     this.state = {
       stories: [],
@@ -118,7 +118,8 @@ export default class HomeActivity extends Component {
       try {
         var location = await GetLocation.getCurrentPosition({
           timeout: 10000,
-          enableHighAccuracy: true
+          enableHighAccuracy: true,
+          maximumAge: 60000
         });
 
         switch (this.props.route.params.searchMode) {
