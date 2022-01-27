@@ -4,9 +4,9 @@ import { style } from '../style';
 import I18n from 'react-native-i18n';
 import Modal from 'react-native-modal';
 import Share from 'react-native-share';
+import { localize } from '../position';
 import React, { Component } from 'react';
 import { translate } from '../vocabulary';
-import GetLocation from 'react-native-get-location';
 import moment from 'moment/min/moment-with-locales';
 import { Icon, Button } from 'react-native-elements';
 import storyRepository from '../repositories/story-repository';
@@ -116,11 +116,7 @@ export default class HomeActivity extends Component {
       filter.pageSize = this.pageSize * (this.state.pageIndex == 1 ? 2 : 1);
 
       try {
-        var location = await GetLocation.getCurrentPosition({
-          timeout: 10000,
-          enableHighAccuracy: true,
-          maximumAge: 60000
-        });
+        var location = await localize();
 
         switch (this.props.route.params.searchMode) {
           case "new":
