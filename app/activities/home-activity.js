@@ -32,6 +32,7 @@ export default class HomeActivity extends Component {
     this.props.navigation.addListener("focus", () => {
       this.setState({
         pageIndex: 1,
+        nextPage: false,
         mainLoader: true
       },
         this.compileStories
