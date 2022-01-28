@@ -121,22 +121,22 @@ export default class HomeActivity extends Component {
 
         switch (this.props.route.params.searchMode) {
           case "new":
-            filter.sortBy = "date";
+            filter.sortBy = "Date";
             break;
 
           case "best":
-            filter.sortBy = "score";
+            filter.sortBy = "Score";
             break;
 
           case "near":
             filter.latitude = location.latitude;
             filter.longitude = location.longitude;
-            filter.sortBy = "date";
+            filter.sortBy = "Date";
             break;
 
           case "mine":
             filter.userId = await AsyncStorage.getItem("userId");
-            filter.sortBy = "date";
+            filter.sortBy = "Date";
             break;
         }
 
